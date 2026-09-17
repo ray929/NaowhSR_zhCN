@@ -28,6 +28,15 @@ GEMINI.md
 .qoder/
 .cody/
 .tabnine/
+.augment/
+.sourcegraph/
+.bolt/
+.codebuddy/
+agenta/
+.rules/
+.roomodes
+.mcp.json
+CODEBUDDY.md
 opencode.json
 opencode.jsonc
 .github/copilot-instructions.md
