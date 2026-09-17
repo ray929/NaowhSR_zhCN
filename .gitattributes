@@ -1,0 +1,8 @@
+# 一律使用 LF 换行，避免 Windows / CI 之间的无谓 diff
+* text=auto eol=lf
+
+# 二进制资源不做换行转换
+*.zip binary
+*.tga binary
+*.ttf binary
+*.ogg binary

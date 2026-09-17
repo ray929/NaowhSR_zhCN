@@ -1,0 +1,17 @@
+## Interface: 120000, 120001, 120005, 120007, 120100
+## Title: |cff0091edNaowh|r Smart Reminders Simplified Chinese Localization Pack
+## Title-zhCN: |cff0091edNaowh|r Smart Reminders 简体中文汉化包
+## Notes: Requires Naowh Smart Reminders. Install it first, then install this pack.
+## Notes-zhCN: 需要先安装 Naowh Smart Reminders，再安装本汉化包。
+## Author: @project-author@
+## Version: @project-version@
+## Dependencies: NaowhSmartReminders
+## X-Localization-For: NaowhSmartReminders 1.4.0
+## X-Localization-Loader: Locale.lua
+## IconTexture: Interface\AddOns\NaowhSmartReminders\Media\LogoAddon.tga
+
+# 字典先加载：填充 ns_zhCN.DICT / .TEMPLATES / .SKIP
+NaowhSR_zhCN_Dict.lua
+
+# 引擎后加载：读取字典，包装原插件的公共出口
+Locale.lua
