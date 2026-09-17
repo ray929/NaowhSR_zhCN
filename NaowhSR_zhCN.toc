@@ -6,9 +6,10 @@
 ## Author: @project-author@
 ## Version: @project-version@
 ## Dependencies: NaowhSmartReminders
+## X-Curse-Project-ID: 1699591
 ## X-Localization-For: NaowhSmartReminders 1.4.0
 ## X-Localization-Loader: Locale.lua
-## IconTexture: Interface\AddOns\NaowhSmartReminders\Media\LogoAddon.tga
+## IconTexture: Interface\AddOns\NaowhSR_zhCN\logo.tga
 
 # 字典先加载：填充 ns_zhCN.DICT / .TEMPLATES / .SKIP
 NaowhSR_zhCN_Dict.lua
