@@ -366,28 +366,35 @@ end
 -------------------------------------------------------------------------------
 -- ns.UIFontPath() (Core.lua:62) 内部有 local uiFontPath 缓存，函数体整体替换。
 --
--- ⚠️ 中文字体：Fonts\ARKai_T.ttf 是国服客户端自带的楷体，保证存在。
---    不引入第三方字体文件，避免体积与授权问题。
+-- ⚠️ 字体一律取 STANDARD_TEXT_FONT（客户端「按语系构建」的标准正文字体）：
+--    · 必然存在，且必然含**本语系**字形 —— 不用猜文件名，也不用随语系改代码；
+--    · zhCN 下它的值就是 Fonts\ARKai_T.ttf，与旧版写死路径**完全等价，零回归**；
+--    · zhTW 下自动指向该客户端的繁体字体，为将来繁体化留门
+--      （zhTW 客户端**没有** ARKai_T.ttf，见 docs/繁体化可行性评估.md）；
+--    · 不引入第三方字体文件，避免体积与授权问题。
+--
+-- 仍然「强制覆盖」：原插件优先返回 LSM 的 "Naowh" 英文矢量字体（无 CJK 字形），
+-- 这才是必须接管 UIFontPath 的原因 —— 所以不再回探原函数。
 
-local zhCN_FONT = "Fonts\\ARKai_T.ttf"
-local origUIFontPath = SR.UIFontPath
-local origAlertFontPath = SR.AlertFontPath
+local HARD_FALLBACK_FONT = "Fonts\\ARKai_T.ttf"
+
+-- STANDARD_TEXT_FONT 由客户端在加载期定义；离线测试桩可能不给，故运行时取值 + 兜底。
+local function LocaleFont()
+    local f = STANDARD_TEXT_FONT
+    if type(f) ~= "string" or f == "" then return HARD_FALLBACK_FONT end
+    return f
+end
+
+-- ⚠️ 已知缺口（本次**有意未接管**）：屏上提醒文字本体走的是另一条出口 ——
+--    RaidReminders.lua:266-487 的 r.text / r.label / r.number
+--    用 ns.AlertFontPath()（主文件:773 AlertFont），经 LSM 取用户所选字体。
+--    本机未装 NaowhUI_Media，LSM 无 "Naowh" 注册 → 落到 STANDARD_TEXT_FONT
+--    → 当前表现正常。但用户在选项面板字体下拉里选拉丁字体时会变方块。
+--    要收紧的话，在 InstallFont 里加一行 SR.AlertFontPath = LocaleFont 即可。
 
 function M.InstallFont()
     if not SR.UIFontPath then return end
-
-    SR.UIFontPath = function()
-        -- 保留原函数的 SharedMedia 查询逻辑，仅在最终回退时换中文字体
-        local path = origUIFontPath and origUIFontPath() or nil
-        -- 原逻辑：LSM 注册的 "Naowh" 字体，或 STANDARD_TEXT_FONT。
-        -- LSM 的 Naowh 字体多半不含中文字形，zhCN 下必须换掉。
-        if path and path ~= STANDARD_TEXT_FONT then
-            -- 用户通过 LSM 显式注册过字体：尊重原设置，但同时保证中文字形可用。
-            -- 折中：仍然返回中文字体（含拉丁字形），中文才显示得出来。
-            return zhCN_FONT
-        end
-        return zhCN_FONT
-    end
+    SR.UIFontPath = LocaleFont
 end
 
 -------------------------------------------------------------------------------
