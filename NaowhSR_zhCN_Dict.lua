@@ -158,7 +158,7 @@ M.DICT = {
                                 = "      按法术 ID 添加技能",
 ["      Restore Removed Abilities"]
                                 = "      恢复已移除的技能",
-["AttachRowCog: Settings"]      = "设置",
+
 ["Audio, and anything added later."] = "音频，以及之后新增的选项。",
 ["What each half is called, and leaving the set."] = "两半分别叫什么，以及退出该组合。",
 [" (added by you)"]             = "（你添加的）",
@@ -190,15 +190,15 @@ M.DICT = {
 ["Warning Time (+before / -after impact)"] = "预警时间（+为命中前 / -为命中后）",
 ["Reminder"]                    = "提醒",
 ["Reminder name"]               = "提醒名称",
-["Debuff sound"]                = "减益音效",
-["Debuff Sounds"]               = "减益音效",
-["Custom text"]                 = "自定义文字",
-["Custom text (the preset supplies it)"] = "自定义文字（由预设提供）",
+
+
+
+
 ["Defensive preset"]            = "防御技能预设",
 ["Missing preset: "]            = "缺失的预设：",
 ["Stoneform - Naowh"]           = "石像形态 - Naowh",
 ["Shadowmeld - Naowh"]          = "影遁 - Naowh",
-["Trash & Debuff Alerts"]       = "小怪与减益警报",
+
 ["Every dungeon"]               = "所有地下城",
 ["Rules for every dungeon"]     = "适用于所有地下城的规则",
 ["+ Debuff Sound"]              = "+ 减益音效",
@@ -408,7 +408,7 @@ M.DICT = {
 ["Healer Reminder"]             = "治疗提醒",
 ["Cast Settings"]               = "施法设置",
 ["Debuff Settings"]             = "减益设置",
-["Text & Test Settings"]        = "文字与测试设置",
+
 ["Voice Settings"]              = "语音设置",
 ["Text & Test"]                 = "文字与测试",
 ["Cast"]                        = "施法",
@@ -418,8 +418,7 @@ M.DICT = {
                                 = "规则属于当前的配置方案与专精。",
 ["Display duration (1-15 seconds)"] = "显示时长（1-15 秒）",
 ["Warn before readiness (0-30 seconds)"] = "就绪前预警（0-30 秒）",
-["Timing predicts ability readiness. It does not confirm a cast or its target."]
-                                = "计时预测的是技能就绪时间，并不确认施法或其目标。",
+
 ["Debuff spell ID"]             = "减益法术 ID",
 ["Instance ID (0 = every dungeon / raid)"] = "副本 ID（0 = 所有地下城/团队副本）",
 ["When"]                        = "时机",
@@ -435,8 +434,7 @@ M.DICT = {
                                 = "仅做视觉测试。如需音频，请启用「朗读提示」或选择一个音效。",
 ["TTS uses Voice and Voice Volume in Setup. Check chat for any playback errors."]
                                 = "TTS 使用「设置」中的语音与语音音量。播放错误请查看聊天框。",
-["Sound preview requested. Save to keep these settings."]
-                                = "已请求音效预览。保存后这些设置才会保留。",
+
 ["Check IDs and sound. A racial voice requires Unit: Me."]
                                 = "请检查 ID 与音效。种族技能语音要求单位为「我」。",
 ["Profile or specialization changed. Select the reminder again."]
@@ -451,19 +449,18 @@ M.DICT = {
                                 = "光环音效需要正式服的 AddAuraSound API。",
 ["Sound changes pending until combat and encounter restrictions end. Existing registrations remain active."]
                                 = "音效改动将推迟到战斗与首领战限制结束后生效。现有注册保持有效。",
-["Some rules could not load: check selected sound files and the 32-rule limit."]
-                                = "部分规则无法加载：请检查所选的音效文件以及 32 条规则上限。",
+
 ["Some aura sounds were not accepted by the client."]
                                 = "部分光环音效未被客户端接受。",
 [" aura sound registrations active. Changes apply outside combat."]
                                 = " 条光环音效注册已生效。改动将在脱离战斗后应用。",
-["Too many rules; maximum 32 per spec."] = "规则过多；每个专精最多 32 条。",
+
 ["No enabled trash rules for this instance and spec."]
                                 = "该副本与该专精没有已启用的小怪规则。",
 ["Check IDs, timing and sound. Stoneform voice requires Unit: Me."]
                                 = "请检查 ID、时机与音效。石像形态语音要求单位为「我」。",
-["Maximum 32 rules per spec."]  = "每个专精最多 32 条规则。",
-["Debuff sound"]                = "减益音效",
+
+
 
 --==============================================================================
 -- 十一、消息 / 错误提示（用户可见，需翻译）
@@ -494,8 +491,7 @@ M.DICT = {
                                 = "你的优先级列表中没有该专精已点出的技能，因此无可提示。",
 ["voice is off, so the test shows the icon only."]
                                 = "语音已关闭，因此测试只显示图标。",
-["this tests the bar callout; the ability's messages fire the reminder under BIGWIGS/DBM MESSAGES, which has its own Test."]
-                                = "此处测试的是进度条提示；该技能的消息提醒由「BIGWIGS/DBM 消息」触发，那里有自己的测试按钮。",
+
 ["|cffff6060Boss Warnings are off in the game options.|r"]
                                 = "|cffff6060游戏设置中已关闭首领警告。|r",
 ["Options, Advanced, Enable Boss Warnings."]
@@ -733,7 +729,7 @@ M.DICT = {
 ["Cooldown Preset"]             = "冷却预设",
 ["Ability Reminder"]            = "技能提醒",
 ["ABILITY REMINDERS"]           = "技能提醒",
-["BIGWIGS/DBM MESSAGES"]        = "BIGWIGS/DBM 消息",
+
 ["Rename this preset."]         = "重命名此预设。",
 ["Linger (seconds)"]            = "停留时长（秒）",
 ["Loads for: "]                 = "加载于：",
@@ -747,7 +743,7 @@ M.DICT = {
 ["+ Add a Ability Reminder"]    = "+ 添加技能提醒",
 ["+ Add a Raid Reminder"]       = "+ 添加团队提醒",
 ["+ Add a Dungeon Reminder"]    = "+ 添加地下城提醒",
-["+ Use BigWigs Messages"]      = "+ 使用 BigWigs 消息",
+
 ["Show seconds after the message"] = "消息之后显示多少秒",
 ["Seconds After the Phase Starts"] = "阶段开始后多少秒",
 ["Spec IDs (comma-separated, optional)"] = "专精 ID（逗号分隔，可选）",
@@ -853,7 +849,6 @@ M.DICT[" + Add Preset"] = " + 添加预设"
 M.DICT["+ Add Ability"]              = "+ 添加技能"
 M.DICT["+ Add Preset"]               = "+ 添加预设"
 M.DICT["+ Debuff Sound"]             = "+ 减益音效"
-M.DICT["+ Use BigWigs Messages"]     = "+ 使用 BigWigs 消息"
 M.DICT["+ Add a Ability Reminder"]   = "+ 添加技能提醒"
 M.DICT["+ Add a Raid Reminder"]      = "+ 添加团队提醒"
 M.DICT["+ Add a Dungeon Reminder"]   = "+ 添加地下城提醒"
@@ -868,28 +863,179 @@ M.DICT["+ Add a Dungeon Reminder"]   = "+ 添加地下城提醒"
 --==============================================================================
 
 -- ── 减益音效面板（IntegrationOptions.lua L555-602）────────────────────────
-M.DICT["Saved Debuff Sounds"] = "已保存的减益音效"
 M.DICT["None yet. Add one with the button above."] = "暂无。用上方按钮添加一个。"
 M.DICT["A debuff sound plays when an aura is applied, stacks or falls off."] =
     "当光环被施加、叠加或消失时播放减益音效。"
-M.DICT["Use the debuff's own aura spell ID. These apply wherever you set them, not to one dungeon. Changes are saved only when you click Save."] =
-    "请使用减益自身的法术光环 ID。它们在你设定的任何地方生效，而非仅限某个地下城。只有点击保存后改动才会被保存。"
-
 -- ── 小怪计时器状态行（Integrations.lua L253）─────────────────────────────
 M.DICT["Trash timers connected. Alerts predict readiness, not a confirmed cast."] =
     "小怪计时器已连接。警报预测的是技能就绪状态，而非已确认的施法。"
 
 -- ── 选项面板长句说明 ─────────────────────────────────────────────────────
-M.DICT["Select settings, then Save. Test previews your current choices."] =
-    "先选择设置，再点击保存。测试会预览你当前的选项。"
 M.DICT["Select an ability to set up its callout, or switch one on to start from the defaults."] =
     "选择一个技能来设置它的提示，或直接开启一个以从默认值开始。"
-M.DICT["Debuff sounds live on their own tab. Changes are saved only when you click Save."] =
-    "减益音效位于它们自己的页签。只有点击保存后改动才会被保存。"
-
 -- ── Bosses.lua L2359 的提示标签 ──────────────────────────────────────────
 M.DICT["Call for an External when nothing of yours is up"] =
     "当你的技能都不可用时呼叫外部减伤"
+
+--==============================================================================
+-- 补充：原插件 1.4.0 → 1.4.18 更新补齐（2026-09-19）
+--
+-- 来源：tools/find_prose.py --sinks / --loose 两档扫描。
+-- 这 18 个版本新增了「配置方案分享 / 合并」「减益警报页」「首领施法目标名」
+-- 等成体系的新界面，另有大量旧文案被改写（改动即时保存 取代了 点保存才生效）。
+--
+-- ⚠️ 本轮不再只依赖 extract_ui_strings.py / find_missing.py：
+--    两者都只认「出口调用」，而原插件绝大多数说明文字走的是
+--    Label(parent, "文案", x, y, w) 这种**位置参数**辅助函数，两个扫描器都漏。
+--==============================================================================
+
+-- ── 新增页签 / 分组标题 ──────────────────────────────────────────────────
+M.DICT["Trash Alerts"]              = "小怪警报"
+M.DICT["Debuff Alerts"]             = "减益警报"
+M.DICT["Debuff alert"]              = "减益警报"
+M.DICT["Saved Debuff Alerts"]       = "已保存的减益警报"
+M.DICT["BOSS REMINDERS"]            = "首领提醒"
+M.DICT["Display & Voice"]           = "显示与语音"
+M.DICT["Trigger & Target"]          = "触发与目标"
+
+-- ── 新增按钮 ────────────────────────────────────────────────────────────
+M.DICT["+ Add Reminder"]            = "+ 添加提醒"
+M.DICT["+ Add an Ability Reminder"] = "+ 添加技能提醒"
+M.DICT["+ Debuff Alert"]            = "+ 减益警报"
+M.DICT["Drag to reorder"]           = "拖动以重新排序"
+M.DICT["Merge a Profile In"]        = "合并配置方案"
+M.DICT["Save As New Profile"]       = "另存为新配置方案"
+M.DICT["Show All Cooldowns"]        = "显示所有冷却"
+M.DICT["Share your Smart Reminders"] = "分享你的智能提醒"
+M.DICT["Copy Debuff Alerts From"]   = "从此专精复制减益警报"
+M.DICT["Speak callout"]             = "朗读提示"
+
+-- ── 新增输入框 / 标签 ───────────────────────────────────────────────────
+M.DICT["Instance ID (0 = every dungeon or raid)"] = "副本 ID（0 = 所有地下城或团队副本）"
+M.DICT["Delay After Pull (seconds)"]  = "进战延迟（秒）"
+M.DICT["Warning Time (seconds before it lands)"] = "预警时间（命中前秒数）"
+M.DICT["Hide Once I Cast (Spell ID, optional)"]  = "施放后隐藏（法术 ID，可选）"
+M.DICT["Player Names (comma-separated, exact, optional)"] =
+    "玩家名称（逗号分隔、需完全匹配、可选）"
+M.DICT["Show Target on Boss Casts"] = "首领施法时显示目标"
+M.DICT["Another instance (by ID)"]  = "另一个副本（按 ID）"
+M.DICT["Every dungeon or raid"]     = "所有地下城或团队副本"
+M.DICT["Saved (not in journal)"]    = "已保存（不在冒险指南中）"
+M.DICT["Raid Boss"]                 = "团队首领"
+M.DICT["Dungeon Boss"]              = "地下城首领"
+M.DICT["Raid Group"]                = "团队队伍"
+M.DICT["Phase Start"]               = "阶段开始"
+M.DICT["Phase Number"]              = "阶段编号"
+M.DICT["In Combat"]                 = "战斗中"
+M.DICT["Contributed changes"]       = "贡献的改动"
+
+-- ── 新增状态行 / 校验提示 ───────────────────────────────────────────────
+M.DICT["Saved."]                    = "已保存。"
+M.DICT["Sound preview requested."]  = "已请求试听音效。"
+M.DICT["Nothing to read."]          = "没有可读取的内容。"
+M.DICT["Consistent across pulls."]  = "各次战斗表现一致。"
+M.DICT["Edit this saved reminder."] = "编辑此已保存的提醒。"
+M.DICT["the name is empty"]         = "名字为空"
+M.DICT["that name is taken"]        = "该名字已被占用"
+M.DICT["need a valid Spell ID"]     = "需要一个有效的法术 ID"
+M.DICT["The string is damaged (encoding)."] = "字符串已损坏（编码问题）。"
+M.DICT["the pack could not be applied"]     = "无法应用该配置包"
+M.DICT["authored callout silent; nothing on the preset is ready"] =
+    "已设定的提示未发声；预设中没有任何技能就绪"
+M.DICT["Some rules could not load: check the selected sound files."] =
+    "部分规则无法加载：请检查所选的音效文件。"
+M.DICT["\n\nNot set up yet."]       = "\n\n尚未设置。"
+M.DICT["\n\nSet up on this spec."]  = "\n\n已在此专精上设置。"
+
+-- ── 工具提示 / 说明长句 ─────────────────────────────────────────────────
+M.DICT["Deletes this spell you added."] = "删除你添加的这个法术。"
+M.DICT["Select the spell the boss casts."] = "选择首领施放的法术。"
+M.DICT["Takes this out of your choices. Restore them with the button at the bottom."] =
+    "将其从你的选择中移除。可用底部按钮恢复。"
+M.DICT["Plays it exactly as it will sound in a fight."] =
+    "按战斗中实际播放的效果试听。"
+M.DICT["Said and shown when nothing on the list is up"] =
+    "列表中没有任何技能可用时播报并显示的内容"
+M.DICT["Its audio, what it is called out loud, and taking it back out of the set."] =
+    "它的音效、朗读内容，以及把它从组合中移除。"
+M.DICT["Drag this onto another enabled ability to change the order it is called out in."] =
+    "把它拖到另一个已启用的技能上，可改变它的提示顺序。"
+M.DICT["It starts empty at default settings, on every character standing in it. Cannot be undone."] =
+    "它会以默认设置清空，作用于处于该方案下的每个角色。无法撤销。"
+M.DICT["Everything set up right now replaces what is stored under it, on every character standing in it. Cannot be undone."] =
+    "当前所有设置会覆盖该方案下已存储的内容，作用于处于该方案下的每个角色。无法撤销。"
+M.DICT["Mark this preset callout for the healer-reminder switch. General defensive callouts should stay unmarked."] =
+    "把该预设提示标记为治疗提醒开关项。通用减伤提示请勿标记。"
+M.DICT["Paste a profile string. Nothing applies until you press Import, and a damaged string is refused outright."] =
+    "粘贴配置方案字符串。点击导入之前不会生效，损坏的字符串会被直接拒绝。"
+M.DICT["Neither records a spec, so a spec handover leaves them alone. Tick this only when you want theirs in place of yours."] =
+    "两者都不记录专精，因此专精交接时不会影响它们。只有你想用对方的设置替换自己的时才勾选。"
+M.DICT["Brings another spec's debuff alerts over to this one. They are saved per spec, and anything already here is left alone."] =
+    "把另一专精的减益警报复制到当前专精。它们按专精保存，此处已有的内容保持不变。"
+M.DICT["Brings another spec's trash rules over to this one. Rules are saved per spec, and anything already here is left alone. Debuff alerts have their own button on their own tab."] =
+    "把另一专精的小怪规则复制到当前专精。规则按专精保存，此处已有的内容保持不变。"
+        .. "减益警报在自己的页签上有独立按钮。"
+M.DICT["Brings another spec's abilities for this boss over to this one. Abilities are saved per spec, so a spec you have not set up yet starts empty. Anything already set up here is left alone."] =
+    "把另一专精针对该首领的技能复制到当前专精。技能按专精保存，"
+        .. "因此尚未设置过的专精会从空列表开始。此处已设置的内容保持不变。"
+M.DICT["Stores everything set up right now as a new profile under a name you choose, and switches to it. Your current profile is left as it was."] =
+    "把当前所有设置以你指定的名字存为新配置方案并切换过去。你现有的配置保持不变。"
+M.DICT["A fresh profile with default settings. It becomes the one every character on this account uses, including any you log into later. Switch a single character afterwards if you want it on its own."] =
+    "一个使用默认设置的新配置方案。它会成为该账号下所有角色（包括之后登录的）所使用的方案。"
+        .. "若想让某个角色单独使用，之后再单独切换。"
+M.DICT["Everything a curator sets up -- priority lists, per-boss orders, callouts and written reminders -- as one string to share. A profile built from someone else's imported pack cannot be shared onward."] =
+    "把编辑者设置的全部内容——优先列表、各首领顺序、提示与文字提醒——导出为一个可分享的字符串。"
+        .. "由他人导入包生成的配置无法再对外分享。"
+M.DICT["Takes a profile string somebody else maintains and merges it into one of yours. A spec they look after replaces yours for that spec; specs they do not cover are left exactly as they are, and per-boss reminders are added rather than swapped."] =
+    "把他人维护的配置方案字符串合并到你自己的方案中。对方负责的专精会替换你的对应专精；"
+        .. "对方未覆盖的专精保持原样，各首领提醒则是新增而非替换。"
+M.DICT["The list is filtered to what the game marks as a major defensive. Turn this on to see every cooldown you have, in case something you want is not flagged."] =
+    "列表已过滤为游戏标记的主要减伤技能。开启后会显示你的全部冷却，"
+        .. "以防你想要的能力未被标记。"
+M.DICT["Place and size each reminder display -- Message, Timer, Icon, Bar and Circle. An alignment grid appears while you are in there. This window steps aside and comes back when you press Exit Config."] =
+    "摆放并调整各提醒显示的大小——消息、计时、图标、进度条与圆环。进入后会出现对齐网格。"
+        .. "本窗口会暂时让出，点击「退出设置」后恢复。"
+M.DICT["Seconds after the trigger. Blank or zero fires immediately. For messages, the delay starts only when BigWigs/DBM sends the message. Enable Messages for this ability in BigWigs; disabled messages cannot trigger reminders."] =
+    "触发后延迟的秒数。留空或填 0 会立即触发。对于消息触发，延迟从 BigWigs/DBM 发出消息时才开始计算。"
+        .. "请在 BigWigs 中为该技能启用消息；被禁用的消息无法触发提醒。"
+M.DICT["Blank fires every time. Match a count with >N, >=N, <N, <=N, !N (not N) or a bare number (exactly N). Separate conditions with a comma to match any of them, or add a leading + on the second one to require both -- example: >3,+<7 fires between 4 and 6."] =
+    "留空表示每次都触发。可用 >N、>=N、<N、<=N、!N（非 N）或纯数字（恰好 N）匹配层数。"
+        .. "用逗号分隔多个条件表示满足任一即可；在第二个条件前加 + 表示两者都需满足"
+        .. "——例如 >3,+<7 表示 4 到 6 层时触发。"
+M.DICT["When a boss cast you have a Boss Cast Starts reminder for names a player, puts that player's name on the alert in their class colour. Only while the cast is going out, since that is the only moment the game will say who is being targeted, and only for the abilities that name anybody at all."] =
+    "当你有「首领开始施法」提醒的首领施法点名了某位玩家时，会以该玩家的职业颜色把名字显示在警报上。"
+        .. "仅在施法进行中显示，因为那是游戏唯一会公布目标的时候；且仅对确实会点名玩家的技能生效。"
+M.DICT["Your own reminders for this boss. A reminder can start from a BigWigs or DBM message, or from the boss beginning or finishing a cast -- pick which in the editor. A message trigger needs Messages enabled for that ability in BigWigs. Bars keep using the ability's own preset and warning time, so both can run together. Test previews the saved output immediately, without waiting."] =
+    "你为该首领自建的提醒。提醒可以由 BigWigs 或 DBM 消息触发，也可以由首领开始或结束施法触发"
+        .. "——在编辑器中二选一。消息触发需要在 BigWigs 中为该技能启用「消息」。"
+        .. "计时条仍沿用技能自身的预设与预警时间，因此两者可以同时运行。"
+        .. "测试会立即预览已保存的输出，无需等待。"
+
+-- ── 带颜色码 / 换行的整串 ───────────────────────────────────────────────
+M.DICT["|cffF0A830Not saved:|r check IDs, timing and sound. A racial voice requires Unit: Me."] =
+    "|cffF0A830未保存：|r 请检查 ID、时机与音效。种族语音需要把单位设为「我」。"
+M.DICT["|cff0091edDelete Preset|r\nRemoves this preset and its list. Cannot be undone."] =
+    "|cff0091ed删除预设|r\n移除该预设及其列表。无法撤销。"
+
+-- ── 被改写的旧文案（新写法，旧键已删）──────────────────────────────────
+M.DICT["Changes save as you make them. Test previews your current choices."] =
+    "改动会即时保存。测试会预览你当前的选项。"
+M.DICT["Debuff alerts live on their own tab. Changes save as you make them."] =
+    "减益警报位于自己的页签。改动会即时保存。"
+M.DICT["Use the debuff's own aura spell ID. These apply wherever you set them, not to one dungeon. Changes save as you make them."] =
+    "请使用减益自身的光环法术 ID。它们在你设定的任何地方生效，而非仅限某个地下城。"
+        .. "改动会即时保存。"
+M.DICT["Timing predicts when the ability is ready. The cast itself is watched separately, which is where a target name can come from."] =
+    "计时用于预测技能何时就绪。施法本身是单独监视的，目标名字正是由此得来。"
+
+-- ── 供模板捕获组回查的单词（只作显示值，源码里没有逻辑比较）────────────
+M.DICT["you"]                       = "你"
+M.DICT["a party member"]            = "一名队友"
+M.DICT["debuff alerts"]             = "减益警报"
+M.DICT["trash rules"]               = "小怪规则"
+M.DICT["added"]                     = "被施加"
+M.DICT["removed"]                   = "被移除"
+M.DICT["applicationsincreased"]     = "层数增加"
 
 -------------------------------------------------------------------------------
 --  模板 A：纯 Lua 模式（可脱离 string.format 独立匹配）
@@ -950,6 +1096,35 @@ M.TEMPLATES = {
     --    "0"/"3" 都应命中 → "0 条光环音效注册生效中。……"
     ["^(%d+) aura sound registrations active%. Changes apply outside combat%.$"]
         = "%1 条光环音效注册生效中。改动将在战斗之外生效。",
+
+    -- ── 1.4.18：首领提醒的「触发条件」描述（Bosses.lua:3642-3667）─────────
+    -- 形如 ("Cast Starts: " .. spellName)、("In Combat +" .. delay .. "s") 的
+    -- 运行时拼接，静态字面量拿不到整串，只加片段词条无效，必须用模式捕获。
+    ["^In Combat %+(%d+)s$"]     = "战斗中 +%1 秒",
+    ["^Cast Starts: (.+)$"]      = "开始施法：%1",
+    ["^Cast Finishes: (.+)$"]    = "结束施法：%1",
+    ["^Aura Applied: (.+)$"]     = "光环获得：%1",
+    ["^Aura Removed: (.+)$"]     = "光环消失：%1",
+    ["^Timer: (.+)$"]            = "计时：%1",
+    ["^Message: (.+)$"]          = "消息：%1",
+
+    -- 上面的 %1 还可能带 " (You)" / " (Boss)" 后缀（Bosses.lua:3661）。
+    -- 捕获组会各自再过一次 L()，所以这两条能就地生效。
+    ["^(.+) %(You%)$"]           = "%1（你）",
+    ["^(.+) %(Boss%)$"]          = "%1（首领）",
+
+    -- ── 1.4.18：减益警报行的 tooltip（IntegrationOptions.lua:726-729）──────
+    -- ("Aura %s on %s, when %s."):format(id, "you"/"a party member", event:lower())
+    -- 三个捕获组都会回查 DICT（you / a party member / added…），故需配套单词词条。
+    ["^Aura (%d+) on (.+), when (.+)%.$"] = "光环 %1 作用于%2，当%3时。",
+
+    -- ── 1.4.18：复制规则弹窗的空态提示（IntegrationOptions.lua:348）────────
+    -- ("No other spec has any %s saved yet."):format(noun)
+    ["^No other spec has any (.+) saved yet%.$"] = "还没有任何其它专精保存过%1。",
+
+    -- ── 1.4.18：配置包导入的错误（Packs.lua:506）─────────────────────────
+    ["^Not a Reminder Pack string %(missing the (.+) prefix%)%.$"] =
+        "不是提醒配置包字符串（缺少 %1 前缀）。",
 
     -- 颜色码外壳：|cAARRGGBB<内容>|r  （轨道 3 之外的第二条通道，用于
     -- 内容本身还需走模板的情况，如 "|cffF0A830Dps|r"）

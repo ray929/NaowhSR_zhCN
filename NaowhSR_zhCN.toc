@@ -7,7 +7,7 @@
 ## Version: @project-version@
 ## Dependencies: NaowhSmartReminders
 ## X-Curse-Project-ID: 1699591
-## X-Localization-For: Naowh Smart Reminders 1.4.0
+## X-Localization-For: Naowh Smart Reminders 1.4.18
 ## X-Localization-Loader: Locale.lua
 ## IconTexture: Interface\AddOns\NaowhSR_zhCN\logo.tga
 
