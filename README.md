@@ -1,4 +1,4 @@
-# Naowh Smart Reminders Chinese Localization Pack (Simplified & Traditional)
+# Naowh Smart Reminders Chinese Localization Pack
 
 A Simplified and Traditional Chinese localization pack for the [**Naowh Smart Reminders**](https://www.curseforge.com/wow/addons/naowhsmartreminders) addon.
 Calls out what to press when the boss timeline says an ability is coming. All specs.
@@ -11,12 +11,12 @@ fan-made localization and is not affiliated with or endorsed by the original aut
 
 ---
 
-# Naowh Smart Reminders 中文汉化包（简繁）
+# Naowh Smart Reminders 中文汉化包
 
 [**Naowh Smart Reminders**](https://www.curseforge.com/wow/addons/naowhsmartreminders) 插件的中文汉化包。
 当首领时间轴提示某个技能即将到来时，提醒你该按什么。支持所有专精。
 
-同时提供简体中文与繁体中文（台湾用语），按客户端语系自动选用。
+同时提供简体中文与繁体中文，按客户端语系自动选用。
 
 请先安装 **Naowh Smart Reminders**，再安装本汉化包。
 
@@ -25,12 +25,12 @@ fan-made localization and is not affiliated with or endorsed by the original aut
 
 ---
 
-# Naowh Smart Reminders 中文漢化包（簡繁）
+# Naowh Smart Reminders 中文漢化包
 
 [**Naowh Smart Reminders**](https://www.curseforge.com/wow/addons/naowhsmartreminders) 插件的中文漢化包。
 當首領時間軸提示某個技能即將到來時，提醒你該按什麼。支援所有專精。
 
-同時提供簡體中文與繁體中文（臺灣用語），依客戶端語系自動選用。
+同時提供簡體中文與繁體中文，依客戶端語系自動選用。
 
 請先安裝 **Naowh Smart Reminders**，再安裝本漢化包。
 
