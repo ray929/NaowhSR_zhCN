@@ -9,6 +9,10 @@
 --    2. secret value 防护     -- 12.x Addonpocalypse，绝不对 secret 做 tostring
 --    3. 白名单翻译            -- 未命中字典一律原样返回，逻辑键绝不被破坏
 --    4. 不动 cfg.text         -- DualRow/SectionHeader 用 text 做缓存键，改了会泄漏
+--
+--  多语系：简体（M.DICT 等）+ 繁体/台湾用语（M.DICT_TW 等）两套值表，
+--  装载时按 GetLocale() 选一套。键都是**英文原串**，所以「加语言 = 加一张值表」，
+--  引擎骨架与三轨拦截完全不区分语系。
 -------------------------------------------------------------------------------
 
 local ADDON_NAME = ...
@@ -33,18 +37,32 @@ M.VERSION = "1.0.0"
 -------------------------------------------------------------------------------
 --  字典
 -------------------------------------------------------------------------------
--- NaowhSR_zhCN_Dict.lua 负责填充这三张表。
+-- NaowhSR_zhCN_Dict.lua 负责填充前三张，NaowhSR_zhTW_Dict.lua 填充后三张。
 M.DICT = M.DICT or {}          -- [英文原串] = 中文（精确匹配）
 M.TEMPLATES = M.TEMPLATES or {}  -- [Lua 模式] = 替换模板（%1 %2 引用捕获组）
 M.FORMATS = M.FORMATS or {}    -- [format 串] = 中文 format 串（供 Lf 使用）
 M.SKIP = M.SKIP or {}          -- [英文原串] = true，显式豁免（防未来误加）
+
+-- 繁体（台湾用语）。表可能不存在（未装载 zhTW 字典文件），故一律兜底空表。
+M.DICT_TW = M.DICT_TW or {}
+M.TEMPLATES_TW = M.TEMPLATES_TW or {}
+M.FORMATS_TW = M.FORMATS_TW or {}
+
+-------------------------------------------------------------------------------
+--  语系分派
+-------------------------------------------------------------------------------
+-- 当前生效的三张表。默认指向简体 —— 即使 ResolveLocale() 从未被调用，
+-- 行为也与单语时期逐字节一致（这是「零回归」的保障）。
+local ActiveDict, ActiveTemplates, ActiveFormats = M.DICT, M.TEMPLATES, M.FORMATS
+
+M.LOCALE = "zhCN"              -- 实际生效的语系码，供调试面板 / 测试读取
 
 -- 模板按长度降序预编译一次，避免每次调用都重排
 local compiledTemplates
 
 local function BuildTemplates()
     local out = {}
-    for pattern, repl in pairs(M.TEMPLATES) do
+    for pattern, repl in pairs(ActiveTemplates) do
         out[#out + 1] = { pattern = pattern, repl = repl }
     end
     -- 更长的模式优先：避免 "Show %s Anchor" 抢在 "Show %s Anchor Size" 之前
@@ -53,6 +71,37 @@ local function BuildTemplates()
 end
 
 M.RebuildTemplates = BuildTemplates
+
+--- 选定语系三表。loc 省略时取客户端语系（GetLocale()）。
+--- 返回实际生效的语系码："zhTW" 或 "zhCN"。
+---
+--- zhTW 表为空（未装载繁体字典）时回落简体 —— 宁可显示简体，也不要整片漏译。
+function M.ResolveLocale(loc)
+    loc = loc or (GetLocale and GetLocale()) or "zhCN"
+
+    if loc == "zhTW" and next(M.DICT_TW) ~= nil then
+        ActiveDict, ActiveTemplates, ActiveFormats = M.DICT_TW, M.TEMPLATES_TW, M.FORMATS_TW
+        M.LOCALE = "zhTW"
+    else
+        ActiveDict, ActiveTemplates, ActiveFormats = M.DICT, M.TEMPLATES, M.FORMATS
+        M.LOCALE = "zhCN"
+    end
+
+    BuildTemplates()
+    return M.LOCALE
+end
+
+--- 精确查表：当前语系优先，缺键回落简体。
+---
+--- ⚠️ 回落是「兜底」而不是常态 —— 两份字典的键集合应当一致
+---    （繁体词典由 tools/make_zhTW.py 从简体词典生成，键集合天然相同）。
+---    回落的意义是：万一某条繁体词条缺失，也只会退化成简体，而不是漏成英文。
+local function Lookup(s)
+    local hit = ActiveDict[s]
+    if hit ~= nil then return hit end
+    if ActiveDict ~= M.DICT then return M.DICT[s] end
+    return nil
+end
 
 -------------------------------------------------------------------------------
 --  L() -- 唯一的翻译入口
@@ -87,7 +136,7 @@ function M.L(s)
     if not str or str == "" then return s end
 
     -- 1. 精确命中
-    local hit = M.DICT[str]
+    local hit = Lookup(str)
     if hit ~= nil then return hit end
 
     -- 超出深度上限：只做精确匹配，不再展开模板
@@ -127,7 +176,7 @@ function M.L(s)
                     end
                 end
                 if repl ~= t.repl then
-                    return M.DICT[repl] or repl
+                    return Lookup(repl) or repl
                 end
             end
         end
@@ -167,7 +216,7 @@ function M.L(s)
                 parts[#parts + 1] = seg
             else
                 local rep = M.L(seg)          -- 先试模式（"any Tank" 等）
-                if rep == seg then rep = M.DICT[seg] or seg end
+                if rep == seg then rep = Lookup(seg) or seg end
                 if rep == seg then allHit = false; break end
                 parts[#parts + 1] = rep
             end
@@ -190,7 +239,7 @@ end
 ---   3. string.format 代入
 ---
 --- ⚠️ 模板串的翻译**不能**走 string.match（%d/%s 不是捕获组）。
----    先查 M.FORMATS 精确表，再退回 M.L（兼容模板本身已是中文的情形）。
+---    先查当前语系的 FORMATS 精确表，再退回 M.L（兼容模板本身已是中文的情形）。
 function M.Lf(fmt, ...)
     local n = select("#", ...)
     if n == 0 then return M.L(fmt) end
@@ -202,7 +251,7 @@ function M.Lf(fmt, ...)
     end
 
     local plain = type(fmt) == "string" and fmt or nil
-    local translated = plain and M.FORMATS[plain] or nil
+    local translated = plain and (ActiveFormats[plain] or M.FORMATS[plain]) or nil
     if not translated then
         translated = M.L(fmt)
     end
@@ -369,9 +418,14 @@ end
 -- ⚠️ 字体一律取 STANDARD_TEXT_FONT（客户端「按语系构建」的标准正文字体）：
 --    · 必然存在，且必然含**本语系**字形 —— 不用猜文件名，也不用随语系改代码；
 --    · zhCN 下它的值就是 Fonts\ARKai_T.ttf，与旧版写死路径**完全等价，零回归**；
---    · zhTW 下自动指向该客户端的繁体字体，为将来繁体化留门
---      （zhTW 客户端**没有** ARKai_T.ttf，见 docs/繁体化可行性评估.md）；
+--    · zhTW 下自动指向该客户端的繁体字体（zhTW 客户端**没有** ARKai_T.ttf，
+--      见 docs/繁体化可行性评估.md）；
 --    · 不引入第三方字体文件，避免体积与授权问题。
+--
+-- ⚠️ 已知取舍：zhTW 的 STANDARD_TEXT_FONT 可能是笔画较重的**隸書 / 楷書**体，
+--    界面可读性不如黑体。但那是客户端自带的标准正文，且必然存在；
+--    自行写死 bKAI00M.TTF / arheiuhk_bd.TTF 之类属「猜文件名」，
+--    在拿不到台服客户端验证的前提下风险更高，故维持现状。
 --
 -- 仍然「强制覆盖」：原插件优先返回 LSM 的 "Naowh" 英文矢量字体（无 CJK 字形），
 -- 这才是必须接管 UIFontPath 的原因 —— 所以不再回探原函数。
@@ -402,13 +456,14 @@ end
 -------------------------------------------------------------------------------
 -- Bosses.lua:2035 的 (role:sub(1,1) .. role:sub(2):lower()) 与
 -- RaidReminders.lua:994 的 DISPLAY_TYPE_LABEL 都是「值被拼进英文句子」。
--- 策略：不改值，靠 M.TEMPLATES 里的模板整句翻译。模板在 Locale_zhCN.lua 里定义。
+-- 策略：不改值，靠 M.TEMPLATES 里的模板整句翻译。
 
 -------------------------------------------------------------------------------
 --  启动
 -------------------------------------------------------------------------------
 function M.Apply()
-    BuildTemplates()
+    -- 语系必须在模板预编译之前定下来 —— BuildTemplates 读的是 ActiveTemplates。
+    M.ResolveLocale()
     M.InstallFont()
 end
 

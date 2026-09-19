@@ -1,8 +1,10 @@
 ## Interface: 120000, 120001, 120005, 120007, 120100
-## Title: |cff0091edNaowh|r Smart Reminders Simplified Chinese Localization Pack
-## Title-zhCN: |cff0091edNaowh|r Smart Reminders 简体中文汉化包
-## Notes: Requires Naowh Smart Reminders. Install it first, then install this pack.
-## Notes-zhCN: 需要先安装 Naowh Smart Reminders，再安装本汉化包。
+## Title: |cff0091edNaowh|r Smart Reminders Chinese Localization Pack (Simplified & Traditional)
+## Title-zhCN: |cff0091edNaowh|r Smart Reminders 中文汉化包（简繁）
+## Title-zhTW: |cff0091edNaowh|r Smart Reminders 中文漢化包（簡繁）
+## Notes: Requires Naowh Smart Reminders. Install it first, then install this pack. Simplified and Traditional Chinese are both included, and the right one is picked automatically from your client language.
+## Notes-zhCN: 需要先安装 Naowh Smart Reminders，再安装本汉化包。同时提供简体中文与繁体中文（台湾用语），按客户端语系自动选用。
+## Notes-zhTW: 需要先安裝 Naowh Smart Reminders，再安裝本漢化包。同時提供簡體中文與繁體中文（臺灣用語），依客戶端語系自動選用。
 ## Author: @project-author@
 ## Version: @project-version@
 ## Dependencies: NaowhSmartReminders
@@ -11,8 +13,12 @@
 ## X-Localization-Loader: Locale.lua
 ## IconTexture: Interface\AddOns\NaowhSR_zhCN\logo.tga
 
-# 字典先加载：填充 ns_zhCN.DICT / .TEMPLATES / .SKIP
+# 字典先加载：填充 M.DICT / .TEMPLATES / .FORMATS / .SKIP（简体）
 NaowhSR_zhCN_Dict.lua
 
-# 引擎后加载：读取字典，包装原插件的公共出口
+# 再加载繁体词典：填充 M.DICT_TW / .TEMPLATES_TW / .FORMATS_TW（繁体 · 台湾用语）
+# 与简体表共享同一张模块表（全局名 NaowhSR_zhCN），只加值表，不改骨架。
+NaowhSR_zhTW_Dict.lua
+
+# 引擎最后加载：按 GetLocale() 选表，包装原插件的公共出口
 Locale.lua
