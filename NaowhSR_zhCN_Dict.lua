@@ -1037,6 +1037,34 @@ M.DICT["added"]                     = "被施加"
 M.DICT["removed"]                   = "被移除"
 M.DICT["applicationsincreased"]     = "层数增加"
 
+--==============================================================================
+-- 十、1.4.20+ 新增：分享包许可校验错误（Verify.lua / Packs.lua）
+--==============================================================================
+-- 1.4.20 引入 naowh.gg 的签名授权包，导入失败时这些原因会显示给使用者，
+-- 属「必须翻」的可见错误提示（经 ns.Tooltip / 状态标签上屏）。
+--
+-- ⚠️ Packs.lua:540 那条**不用在这里建键** —— 源码里它是拼接前缀，
+--    运行时整串 "Not a Reminder Pack string (missing the NSRPACK2: prefix)."
+--    已由下方 TEMPLATES 里的模式模板覆盖。
+-- ⚠️ 含变量的那条（签名无效）同样走模板，见「模板 B」。
+M.DICT["This spec's active preset"]  = "本专精的当前预设"
+M.DICT["the serializer libraries are missing from this build"] =
+    "此版本缺少序列化库"
+M.DICT["this pack's license is damaged (encoding)"] =
+    "此分享包的许可已损坏（编码问题）"
+M.DICT["this pack's license is damaged (too short)"] =
+    "此分享包的许可已损坏（长度不足）"
+M.DICT["this pack's license is damaged (size)"] =
+    "此分享包的许可已损坏（长度不符）"
+M.DICT["this pack's license needs a newer version of the addon"] =
+    "此分享包的许可需要更新版本的插件"
+M.DICT["this pack's link to your account expired -- get a fresh one from naowh.gg"] =
+    "此分享包与您账号的绑定已过期 —— 请到 naowh.gg 重新获取"
+M.DICT["could not read your Battle.net BattleTag to check this pack's license"] =
+    "读不到您的战网昵称，无法校验此分享包的许可"
+M.DICT["this pack is licensed to a different Battle.net account"] =
+    "此分享包授权给另一个 Battle.net 账号"
+
 -------------------------------------------------------------------------------
 --  模板 A：纯 Lua 模式（可脱离 string.format 独立匹配）
 --
@@ -1059,6 +1087,14 @@ M.TEMPLATES = {
     ["^Preset (%d+)$"]          = "预设 %1",
     ["^Spec (%d+)$"]            = "专精 %1",
     ["^Group (%d+)$"]           = "%1 队",
+
+    -- ── 模板 B：1.4.20+ 签名校验失败（尾随变量）────────────────────────────
+    -- Verify.lua:354  "this pack's license signature is invalid (" .. sigErr .. ")"
+    -- 括号内是 RSA 校验返回的变量，只有前半段可确定 → 用 (.+) 捕获尾部，
+    -- 尾部是英文错误码，字典里没有就原样带出（可接受）。
+    -- ⚠️ %( 与 %) 是**字面括号**的转义；(.+) 才是捕获组。
+    ["^this pack's license signature is invalid %((.+)%)$"] =
+        "此分享包的许可签名无效（%1）",
 
     -- ── 值被拼进英文句子 ──────────────────────────────────────────────────
     -- RaidReminders.lua:1299  "Show " .. DISPLAY_TYPE_LABEL[dt] .. " Anchor"

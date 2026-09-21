@@ -13,6 +13,25 @@
 --  多语系：简体（M.DICT 等）+ 繁体/台湾用语（M.DICT_TW 等）两套值表，
 --  装载时按 GetLocale() 选一套。键都是**英文原串**，所以「加语言 = 加一张值表」，
 --  引擎骨架与三轨拦截完全不区分语系。
+--
+--  已对上游 **1.4.23** 复核（2026-09-21）：三轨依赖的钩子**全部健在**，
+--  但源码行号相对 1.4.18 整体后移。当前行号（上游再更新后须重新核对）：
+--
+--    ns.Font                   Core.lua:78     轨 1 的支点（文字总出口）
+--    ns.UIFontPath             Core.lua:70     轨 3 的支点
+--    ns.Button                 Core.lua:121    轨 2.3
+--    ns.SetButtonText          Core.lua:144    轨 2.4
+--    ns.Tooltip                Core.lua:164    轨 2.5
+--    UI.L                      Widgets.lua:19  轨 2.1
+--    UI.ShowWidgetTooltip      Widgets.lua:45  轨 2.2
+--    UI.BuildDropdownControl   Widgets.lua:185 轨 2.6
+--    UI.BuildAlertSoundTables  Widgets.lua:678 轨 2.7
+--
+--  ⚠️ 1.4.20 起上游自带本地化入口 ns.L（Core.lua:18），读的是全局表
+--     _G.NaowhSmartRemindersLocale（由 Locales/*.lua 填充）。它**不改变**本引擎：
+--     ns.L 的全部 10 个调用点最终都落在 ns.Font 造出的 FontString 上，轨 1 已覆盖
+--     （已验证：窗口标题 "|cff0091edNaowh|r " .. ns.L("Smart Reminders") 照翻不误）。
+--     若要「按上游设计接入」，可往那张全局表里写中文；那是另一条路，非必需。
 -------------------------------------------------------------------------------
 
 local ADDON_NAME = ...
@@ -267,8 +286,9 @@ end
 --  轨 2：显式出口拦截
 -------------------------------------------------------------------------------
 
--- 2.1 UI.L（官方预留钩子，Widgets.lua:19）
---     原插件内无调用点，覆写是为了语义完整 + 未来版本自动生效。
+-- 2.1 UI.L（Widgets.lua:19）
+--     1.4.20 起上游把它实现成了 ns.L 的转发壳（早期是空占位函数）。
+--     原插件内**仍无其它调用点**，覆写是为了语义完整 + 未来版本自动生效。
 if UI then
     UI.L = M.L
 end
@@ -291,7 +311,7 @@ if origShowWidgetTooltip then
     end
 end
 
--- 2.3 ns.Button(parent, text, w, h, onClick)  -- Core.lua:113
+-- 2.3 ns.Button(parent, text, w, h, onClick)  -- Core.lua:121
 --     其内部 lazy 走 ns.Font（轨 1 覆盖），但按钮文字常是短词，
 --     这里显式翻译以确保「文字宽度测量发生在翻译之后」。
 local origButton = SR.Button
@@ -302,7 +322,7 @@ if origButton then
     end
 end
 
--- 2.4 ns.SetButtonText(btn, text)  -- Core.lua:136
+-- 2.4 ns.SetButtonText(btn, text)  -- Core.lua:144
 local origSetButtonText = SR.SetButtonText
 if origSetButtonText then
     SR.SetButtonText = function(btn, text)
@@ -311,7 +331,7 @@ if origSetButtonText then
     end
 end
 
--- 2.5 ns.Tooltip(frame, title, body)  -- Core.lua:156
+-- 2.5 ns.Tooltip(frame, title, body)  -- Core.lua:164
 --     Compose() 把 title 与 body 拼成一条串，走后端 ShowWidgetTooltip。
 --     由于 2.2 已包了 ShowWidgetTooltip，且 Compose 返回的是拼好的整串，
 --     整串无法命中字典。这里改为：分别翻译 title / body，让 Compose 拼出中文。
@@ -374,7 +394,7 @@ end
 -------------------------------------------------------------------------------
 --  轨 1：ns.Font 包装 + FontString.SetText 实例遮蔽
 -------------------------------------------------------------------------------
--- ns.Font 是全插件所有文字的创建出口（Core.lua:70）。
+-- ns.Font 是全插件所有文字的创建出口（Core.lua:78）。
 -- 它返回的 FontString 上挂一个自定义 SetText，即可覆盖全插件 95% 的文本。
 --
 -- ⚠️ 实例字段遮蔽方法在 WoW 上可行，但为稳妥起见：
@@ -413,7 +433,7 @@ end
 -------------------------------------------------------------------------------
 --  轨 3：字体接管
 -------------------------------------------------------------------------------
--- ns.UIFontPath() (Core.lua:62) 内部有 local uiFontPath 缓存，函数体整体替换。
+-- ns.UIFontPath() (Core.lua:70) 内部有 local uiFontPath 缓存，函数体整体替换。
 --
 -- ⚠️ 字体一律取 STANDARD_TEXT_FONT（客户端「按语系构建」的标准正文字体）：
 --    · 必然存在，且必然含**本语系**字形 —— 不用猜文件名，也不用随语系改代码；
