@@ -439,10 +439,24 @@ M.DICT = {
                                 = "请检查 ID 与音效。种族技能语音要求单位为「我」。",
 ["Profile or specialization changed. Select the reminder again."]
                                 = "配置方案或专精已改变。请重新选择该提醒。",
-["The trash ability catalogue is unavailable. Enable the trash timer engine and its data addon, then reopen this page."]
-                                = "小怪技能目录不可用。请启用小怪计时引擎及其数据插件，然后重新打开此页面。",
-["Trash timer engine unavailable. Enable a compatible timer engine to use predictions."]
-                                = "小怪计时引擎不可用。请启用兼容的计时引擎以使用预测功能。",
+
+-- ── 1.4.25：Trash 页改为「需要 ExBoss」的说法 ──────────────────────────
+-- 旧的两条（Trash timer engine unavailable… / The trash ability catalogue is
+-- unavailable…）已被上游删掉，换成下面这条 NO_ENGINE（Integrations.lua:224）。
+-- ⚠️ 它是**运行时拼接**：`"…|r " .. "The ability list needs it too."`，源码里
+--    没有整串字面量，所以键要写**拼好的真实值**（注意 `|r` 后带一个空格）。
+--    颜色码夹在中间（不是包住整串），故不能用 ^(|c…)(.+)%|r$ 外壳模板，
+--    直接写带颜色码的整串。
+["|cffff6060ExBoss is missing or too old, so no trash alert can fire.|r The ability list needs it too."]
+                                = "|cffff6060ExBoss 缺失或版本过旧，无法触发小怪警报。|r 技能列表也需要它。",
+
+-- 1.4.25 ability 列表的空态文案（IntegrationOptions.lua:616）。
+-- 上游说这条原本**不可达**，所以列表一直是空白；1.4.25 修好了才显示出来。
+-- 出口是位置参数式 helper `Label(list, "…", 4, 0, 230)`（第 2 实参），
+-- 老扫描器不认，靠 find_prose.py --sinks 直捞才发现。
+["No trash abilities to show. The list comes from ExBoss: enable or update it, then reopen this page."]
+                                = "没有可显示的小怪技能。该列表来自 ExBoss：请启用或更新它，然后重新打开此页面。",
+
 ["The trash timer engine changed; reload before using trash alerts."]
                                 = "小怪计时引擎已变更；使用小怪警报前请先重载界面。",
 ["Aura sounds require the Retail AddAuraSound API."]
@@ -1062,9 +1076,6 @@ M.DICT["this pack's link to your account expired -- get a fresh one from naowh.g
     "此分享包与您账号的绑定已过期 —— 请到 naowh.gg 重新获取"
 M.DICT["could not read your Battle.net BattleTag to check this pack's license"] =
     "读不到您的战网昵称，无法校验此分享包的许可"
-M.DICT["this pack is licensed to a different Battle.net account"] =
-    "此分享包授权给另一个 Battle.net 账号"
-
 -------------------------------------------------------------------------------
 --  模板 A：纯 Lua 模式（可脱离 string.format 独立匹配）
 --
@@ -1095,6 +1106,20 @@ M.TEMPLATES = {
     -- ⚠️ %( 与 %) 是**字面括号**的转义；(.+) 才是捕获组。
     ["^this pack's license signature is invalid %((.+)%)$"] =
         "此分享包的许可签名无效（%1）",
+
+    -- ── 1.4.24：许可校验失败时同时列出两个 BattleTag（Verify.lua:369）───────
+    -- Verify.lua 用全局 string.format 拼出整串（不是 ns.Lf），再经 FontString
+    -- 上屏，所以拦到的是**拼好的整串**，必须用模式捕获：
+    --   format("this pack is licensed to %s, but you are logged in to Battle.net as %s",
+    --          battletag, myTag)
+    -- 它取代了 1.4.23 及以前那条 "this pack is licensed to a different Battle.net
+    -- account"（只说「属于另一个账号」，看不出是不是自己在 naowh.gg 上把 BattleTag
+    -- 的大小写填错了 —— 见上游 CHANGELOG 1.4.24）。
+    -- ⚠️ 两个 BattleTag（如 "SilkyTouch#1976"）会各自再过一次 L()（MAX_DEPTH=3），
+    --    字典里查不到 → 原样带出，正是想要的。
+    -- ⚠️ Battle%.net 的句点要转义；未转义的 . 会匹配任意字符。
+    ["^this pack is licensed to (.+), but you are logged in to Battle%.net as (.+)$"] =
+        "此分享包授权给%1，但你当前登录的 Battle.net 账号是%2",
 
     -- ── 值被拼进英文句子 ──────────────────────────────────────────────────
     -- RaidReminders.lua:1299  "Show " .. DISPLAY_TYPE_LABEL[dt] .. " Anchor"
