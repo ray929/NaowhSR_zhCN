@@ -609,8 +609,7 @@ M.DICT = {
                                 = "当前客户端不支持 C_EncounterEvents。",
 ["no priority list for this spec yet -- add a defensive first."]
                                 = "此专精还没有优先级列表 —— 请先添加一个防御技能。",
-["no priority list for this spec (or nothing on it is talented)"]
-                                = "此专精没有优先级列表（或列表中的技能均未点出）",
+
 ["the reminder is switched OFF -- turn it on in Smart Reminders"]
                                 = "该提醒处于关闭状态 —— 请在「智能提醒」中开启",
 ["nothing the journal actively contradicts."]
@@ -627,8 +626,7 @@ M.DICT = {
                                 = "优先级列表中的技能均未点出，因此没有可朗读的内容。请在「智能提醒」中添加防御技能，或确认当前专精是否正确。",
 ["only Play a Sound is on: expect one beep per ability per pull, nothing else"]
                                 = "仅开启了「播放音效」：每次战斗每个技能只会响一声，不会有其他提示",
-["priority list is EMPTY for this spec, so nothing can ever be called -- add defensives in Smart Reminders first"]
-                                = "此专精的优先级列表为空，因此不会触发任何提示 —— 请先在「智能提醒」中添加防御技能",
+
 ["no pull to report yet. Fight a boss with BigWigs or DBM running, or open the Ability Reminders tab to browse what has been recorded."]
                                 = "暂无战斗记录可报告。请在与首领战斗时启用 BigWigs 或 DBM，或打开「技能提醒」标签页查看已有记录。",
 
@@ -1270,4 +1268,42 @@ M.SKIP = {
     ["|cffff6060ability add picker|r: "] = true,
     ["|cffff6060ability reminder picker|r: "] = true,
     ["|cffff6060raid reminder editor|r: "] = true,
+
+    --==========================================================================
+    -- 1.4.26：`/nutank` 诊断改写引入的串
+    --
+    -- 出口核实（2026-09-27）：全部只经
+    --   ① `ns.Print` → Lua `print()` → 聊天框（不经 FontString:SetText）
+    --   ② `ns.ShowDiagExport` → `ns.MakeMultilineBox` → ScrollFrame + **EditBox**
+    -- 两条路引擎三轨都拦不到（轨 1 只包 `ns.Font` 的 FontString 实例，
+    -- 轨 2 不含 EditBox）—— 翻了也不会生效，故不译。
+    --
+    -- ⚠️ 同一次 `/nutank` 导出里，**标题与提示是 FontString、会翻**：
+    -- `Diagnostic Trace` / `Click the text, then Ctrl+A Ctrl+C, and paste it to
+    -- whoever asked.` —— 这两条在 M.DICT 里。别因为「整个框都是诊断」就一起豁免。
+    --==========================================================================
+    ["target display off"] = true,                                   -- SmartReminders.lua:3919（cast 目标名追踪）
+    ["the selected preset"] = true,                                  -- :5916（preset 名为空时的占位显示值）
+    ["this spec has no cooldown preset, so a callout without one of its own stays silent -- make one under Cooldown Presets"] = true,
+    -- ⚠️ 下面这条**键尾带一个空格**，是 `find_prose.py` 折叠相邻字面量的原样结果
+    -- （`"...instead, for "` 的尾空格被保留）。少写这个空格就匹配不上。
+    ["the client refuses the combat log to addons in this build, so Skip When Already Covered has no aura data -- it runs on your own casts instead, for "] = true,
+    ["s after you press one"] = true,                                -- 上一条的尾段碎片（同一个拼接串）
+
+    --==========================================================================
+    -- 既有串：同为聊天 / 诊断导出路径，此前被 `find_prose.py` 误列为
+    -- 「可翻界面文本」而反复报警。逐条读过出口后在此钉住（2026-09-27）。
+    --
+    -- ⚠️ **不包含** `Integrations.lua` 那四条（spell not known or unreadable /
+    -- cooldown active or on hold / dead or unreadable player state /
+    -- configuration pending or disabled）—— 它们经 `RacialStatusLine()` 拼好后
+    -- 由 `auraStatus:SetText()` 上屏，**走 FontString、拦得到**，是真缺口。
+    --==========================================================================
+    ["no alert to name"] = true,                                     -- :3928（cast 目标名追踪）
+    ["no alert, but this cast names somebody"] = true,               -- :3928（同上，三元另一支）
+    ["the error itself carries a secret"] = true,                    -- :2966 → ns.Print
+    ["unreadable (the error itself carries a secret)"] = true,       -- :3047 ErrText() → ns.Print
+    ["cooldown unreadable, using the estimate"] = true,              -- :6425 → ns.Print
+    ["Charge model transitions (automatic, last 80):"] = true,       -- :1827 → AppendChargeAudit(out) → /nutank 导出
+    [" stepped aside to its Ability Reminder"] = true,               -- :2305 → LogLine() → callLog → /nutank 导出（注意行首空格）
 }
