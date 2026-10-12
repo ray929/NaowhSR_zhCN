@@ -385,8 +385,10 @@ M.DICT = {
 [" Each character will load the one for its spec."]
                                 = " 每个角色都会加载与自身专精对应的方案。",
 [" Pick one under Active Profile."] = " 请在「当前配置方案」中选择一个。",
-["This profile contains an imported pack (%s by %s), so it cannot be shared onward. Build your own profile to share one."]
-                                = "该配置方案包含导入的分享包（%s 来自 %s），因此无法再次分享。请构建你自己的配置方案来分享。",
+-- ⚠️ "This profile contains an imported pack (%s by %s)…" 与 "This profile came
+-- from %s…" 的 %s 是 ns.L 返回**之后**才被 :format 填充的，引擎拦到的是已填值
+-- 的整串 —— DICT 精确键里的 %s 匹配不上（2026-10-12 探针实锤），这两条已迁往
+-- M.TEMPLATES 用模式捕获，见「1.4.28：导出拒绝」块。
 
 --==============================================================================
 -- 十、小怪 / 减益 Integrations + IntegrationOptions
@@ -1119,6 +1121,16 @@ M.TEMPLATES = {
     ["^this pack is licensed to (.+), but you are logged in to Battle%.net as (.+)$"] =
         "此分享包授权给%1，但你当前登录的 Battle.net 账号是%2",
 
+    -- ── 1.4.28：导出拒绝（ExportPack → return nil, err，Packs.lua:317/321）────
+    -- 与上面同类：ns.L 返回的模板串里的 %s 是**之后**才被 :format 填上的，
+    -- 引擎在 SetText 层拦到的是**已填值**的整串（外面包着 |cffff6060…|r，
+    -- 经颜色码内嵌片段递归进 L() 命中这里的模式）。DICT 精确键里的 %s
+    -- 永远匹配不上运行时串 —— 2026-10-12 探针实锤（旧兄弟词条因此一直没生效）。
+    ["^This profile contains an imported pack %((.+) by (.+)%), so it cannot be shared onward%. Build your own profile to share one%.$"] =
+        "该配置方案包含导入的分享包（%1 来自 %2），因此无法再次分享。请构建你自己的配置方案来分享。",
+    ["^This profile came from (.+), which is licensed to the account that downloaded it%. It cannot be exported%. Get your own copy from naowh%.gg%.$"] =
+        "该配置方案来自 %1，其许可绑定在下载它的账号上。无法导出。请到 naowh.gg 获取你自己的副本。",
+
     -- ── 值被拼进英文句子 ──────────────────────────────────────────────────
     -- RaidReminders.lua:1299  "Show " .. DISPLAY_TYPE_LABEL[dt] .. " Anchor"
     ["^Show (.+) Anchor$"]      = "显示%1锚点",
@@ -1306,4 +1318,19 @@ M.SKIP = {
     ["cooldown unreadable, using the estimate"] = true,              -- :6425 → ns.Print
     ["Charge model transitions (automatic, last 80):"] = true,       -- :1827 → AppendChargeAudit(out) → /nutank 导出
     [" stepped aside to its Ability Reminder"] = true,               -- :2305 → LogLine() → callLog → /nutank 导出（注意行首空格）
+
+    --==========================================================================
+    -- 1.4.28 的 /nutank 诊断把整串折行成多个 ns.L("...") 碎片，且部分经
+    -- `out[#out + 1] = ...` 表格**间接**走 ns.Print / 诊断导出 —— 不在
+    -- ns.Print 的文本参数区间里，`find_prose.py` 的区间判定追不到，
+    -- 于是碎片被误列进「可翻界面文本」。出口仍是聊天框 / EditBox，
+    -- 引擎拦不到，逐条读过源码后在此钉住（2026-10-12）。
+    -- ⚠️ 键都是字面量原样（含尾随空格），少写空格就匹配不上。
+    --==========================================================================
+    ["nothing on your active preset (%s) can be cast on this "] = true,   -- :6001 → DiagProblems() out 表
+    ["character, so a callout falling back to it stays silent -- pick another "] = true,  -- :6002 同上
+    ["one under Cooldown Presets. Callouts bound to a preset of their own "] = true,      -- :6003 同上
+    ["still fire."] = true,                                          -- :6004 同上（尾段）
+    ["curated ability (check /nutank keys during a pull)"] = true,   -- :6162 → trace 诊断 out 表
+    ["either no pull happened while tracing, or no boss mod broadcast a "] = true,  -- :6161 同上
 }
