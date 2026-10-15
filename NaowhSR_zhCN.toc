@@ -1,4 +1,4 @@
-## Interface: 120000, 120001, 120005, 120007, 120100
+## Interface: 120000, 120001, 120005, 120007, 120100, 120105
 ## Title: |cff0091edNaowh|r Smart Reminders Chinese Localization Pack
 ## Title-zhCN: |cff0091edNaowh|r Smart Reminders 中文汉化包
 ## Title-zhTW: |cff0091edNaowh|r Smart Reminders 中文漢化包
